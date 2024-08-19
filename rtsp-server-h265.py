@@ -11,7 +11,8 @@ class TestRtspMediaFactory(GstRtspServer.RTSPMediaFactory):
 
     def do_create_element(self, url):
         # 使用 qtdemux 解析 MP4 容器，并使用 h265parse 解析视频流
-        pipeline_str = f"filesrc location={self.hevcfile} ! qtdemux ! queue ! h265parse ! rtph265pay name=pay0 pt=96"
+        # pipeline_str = f"filesrc location={self.hevcfile} ! qtdemux ! queue ! h265parse ! rtph265pay name=pay0 pt=96"
+        pipeline_str = f"filesrc location={self.hevcfile} ! h265parse ! rtph265pay name=pay0 pt=96"
         pipeline = Gst.parse_launch(pipeline_str)
 
         # 监听总线消息以处理循环播放
@@ -42,7 +43,7 @@ class GstServer():
 
 if __name__ == "__main__":
     Gst.init(None)
-    hevcfile = sys.argv[1] if len(sys.argv) > 1 else "sample.mp4"
+    hevcfile = sys.argv[1] if len(sys.argv) > 1 else "3840x2160_8bit.h265"
     server = GstServer(hevcfile)
     server.run()
 

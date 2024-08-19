@@ -3,6 +3,19 @@
 GST_DEBUG=4 python rtsp-server-h265.py ./DJI_0706_h265.mp4
 #+end_src
 
+* for hisi ss928v100 decode
+
+** h265 need decode type:
+#+begin_src
+Stream #0:0: Video: hevc (Main 10), yuvj420p(pc, bt709), 3840x2160, 25 fps, 25 tbr, 1200k tbn, 25 tbc。
+#+end_src
+
+** ffmpeg: convert jpg to h265
+#+begin_src bash
+  ffmpeg -y -i "$img" -c:v libx265 -profile:v main10 -pix_fmt yuvj420p -colorspace bt709 -vf "scale=3840:2160" -r 25 -f hevc - | cat >> "$output_file"
+#+end_src
+see ~compress_to_h265.sh~ for detail.
+
 * gstreamer
 GStreamer（简称GST）是一个强大的多媒体框架，用于创建各种类型的多媒体应用程序，如音视频播放、编辑、流媒体等。它广泛应用于桌面、嵌入式设备和服务器环境中。GStreamer是由C语言编写的，并提供了多种语言绑定，其中包括Python。
 
